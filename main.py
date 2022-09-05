@@ -22,10 +22,14 @@ def WaitForSwitchSite():
 def DataProcessing():
     for all in ForAll:
         i=0
+        print(all.text)
         for one in str(all.text).split(sep='\n'):
             i+=1
             print(one)
-            browser.execute_script(f"var e = arguments[0]; e.innerText = '{one}\n {translator(one)}'", str(all.text).split(sep='\n')[i])
+            try:
+                browser.execute_script(f"var e = arguments[0]; e.innerText = '{str(translator(one))}'", ForAll[i])
+            except:
+                pass
         WaitForSwitchSite()
 DataProcessing()
 
