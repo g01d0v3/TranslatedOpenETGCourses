@@ -4,9 +4,17 @@ import time
 from deep_translator import GoogleTranslator
 
 browser = webdriver.Chrome()
-browser.get('https://edube.org')
-ForAll = browser.find_elements(By.XPATH, "//*[text()]")
+browser.get('https://edube.org/login')
 
+def FindElements():
+    ForAll = browser.find_elements(By.TAG_NAME, 'p') + browser.find_elements(By.TAG_NAME, 'strong')
+    return ForAll
+def login():
+    mail = input("ur mail ")
+    password = input("ur password ")
+    login_field = browser.find_element(By.ID, "email").send_keys(mail)
+    password_field = browser.find_element(By.ID, "password").send_keys(password)
+    browser.find_element(By.XPATH, "//*[@id='content-wrap']/div/div/div/div/form/button").click()
 def translator(text):
     translated = GoogleTranslator(source="en", target="ru").translate(text)
     print(translated)
@@ -18,19 +26,15 @@ def WaitForSwitchSite():
         print(url)
         time.sleep(6)
     print ('Site Switched to ', browser.current_url)
-
+    DataProcessing()
 def DataProcessing():
-    for all in ForAll:
+    ForAll = FindElements()
+    if ForAll:
         i=0
-        print(all.text)
-        for one in str(all.text).split(sep='\n'):
-            i+=1
-            print(one)
-            try:
-                browser.execute_script(f"var e = arguments[0]; e.innerText = '{str(translator(one))}'", ForAll[i])
-            except:
-                pass
-        WaitForSwitchSite()
+        for all in ForAll:
+            print(all.text)
+            browser.execute_script(f"var e = arguments[0]; e.insertAdjacentHTML('beforeend', '<br>{str(translator(all.text))}')", ForAll[i])
+            i += 1
+    WaitForSwitchSite()
+login()
 DataProcessing()
-
-
