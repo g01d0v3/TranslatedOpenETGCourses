@@ -11,8 +11,7 @@ class EdubeTranslator():
         self.browser.get('https://edube.org/login')
 
     def find_elements(self):
-        ForAll = self.browser.find_elements(By.TAG_NAME, 'p') + self.browser.find_elements(By.TAG_NAME, 'strong') + self.browser.find_elements(By.TAG_NAME, 'li')
-        return ForAll
+        return self.browser.find_elements(By.TAG_NAME, 'p') + self.browser.find_elements(By.TAG_NAME, 'strong') + self.browser.find_elements(By.TAG_NAME, 'li')
 
     def login(self):
         if setts.mail and setts.password:
