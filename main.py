@@ -17,7 +17,7 @@ class EdubeTranslator():
 
 
     def login(self):
-        if setts.setts['mail'] and setts.setts['password']:
+        if setts.mail and setts.password:
                 if input('Wanna use recent data(y/n)?\n').lower() == "y":
                     mail, password = setts.mail, setts.password
                 else:
