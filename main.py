@@ -19,7 +19,7 @@ class EdubeTranslator():
     def login(self):
         if setts.setts['mail'] and setts.setts['password']:
                 if input('Wanna use recent data(y/n)?\n').lower() == "y":
-                    mail, password = setts.setts['mail'], setts.setts['password']
+                    mail, password = setts.mail, setts.password
                 else:
                     mail = input("ur mail ")
                     password = input("ur password ")
@@ -62,8 +62,5 @@ class EdubeTranslator():
         self.WaitForSwitchSite()
 
 
-def main():
-    Chrome = EdubeTranslator()
-
 if __name__ == "__main__":
-    main()
+    Chrome = EdubeTranslator()
