@@ -30,15 +30,14 @@ class EdubeTranslator():
         self.browser.get('https://edube.org/')
 
     def __translate_text(self, text):
-        translated = GoogleTranslator(source="en", target="ru").translate(text)
-        print(translated)
-        return translated
+        print(GoogleTranslator(source="en", target="ru").translate(text))
+        return GoogleTranslator(source="en", target="ru").translate(text)
 
     def wait_for_switch_site(self):
         url = self.browser.current_url
         while self.browser.current_url == url:
             print(url)
-            time.sleep(6)
+            time.sleep(3)
         print('Site Switched to ', self.browser.current_url)
         return True
 
@@ -48,8 +47,7 @@ class EdubeTranslator():
                 print(all.text)
                 try:
                     self.browser.execute_script(
-                        f"var e = arguments[0]; e.insertAdjacentHTML('beforeend', '<br>{str(self.__translate_text(all.text))}')",
-                        all)
+                        f"var e = arguments[0]; e.insertAdjacentHTML('beforeend', '<br>{str(self.__translate_text(all.text))}')", all)
                 except Exception as e:
                     print('woops, some error stack process: ', e)
 
