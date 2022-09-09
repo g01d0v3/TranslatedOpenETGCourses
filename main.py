@@ -42,8 +42,9 @@ class EdubeTranslator():
         return True
 
     def process_data(self):
-        if self.find_elements():
-            for all in self.find_elements():
+        ForAll = self.find_elements()
+        if ForAll:
+            for all in ForAll:
                 print(all.text)
                 try:
                     self.browser.execute_script(
