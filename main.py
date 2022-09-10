@@ -37,8 +37,7 @@ class EdubeTranslator():
     def wait_for_switch_site(self):
         url = self.browser.current_url
         while self.browser.current_url == url:
-            print(url)
-            time.sleep(3)
+            time.sleep(2)
         print(Fore.BLUE + 'Site Switched to ', self.browser.current_url, Fore.RESET)
 
         return True
@@ -50,11 +49,12 @@ class EdubeTranslator():
                 try:
                     self.browser.execute_script(
                         f"var e = arguments[0]; e.insertAdjacentHTML('beforeend', '<br>{str(self.__translate_text(one.text))}')", one)
-                except selenium.common.exceptions.JavascriptException as e:
-                    print(Fore.RED + f'couldn\'t add text:\n', Fore.RESET, one.text, one )
-                except Exception as e:
-                    print(Fore.RED + 'woops, some error stack process: ', Fore.RESET, e)
 
+                except selenium.common.exceptions.JavascriptException as e:
+                    print(f'{Fore.RED}couldn\'t add text:\n{Fore.RESET}{one.text}\n', f'{Fore.BLUE}element:{Fore.RESET} {one}')
+
+                except Exception as e:
+                    print(f'{Fore.RED}woops, some error stack process: {Fore.RESET}', e)
 
 
 if __name__ == "__main__":
