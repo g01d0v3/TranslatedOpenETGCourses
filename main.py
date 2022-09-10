@@ -2,6 +2,7 @@ from colorama import Fore
 import selenium.common.exceptions
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import os
 import time
 from deep_translator import GoogleTranslator
 import setts
@@ -57,22 +58,19 @@ class EdubeTranslator():
 
     def process_data(self):
         ForAll = self.find_elements()
-        url = self.browser.current_url
         if ForAll:
+            url = self.browser.current_url
             for one in ForAll:
                 try:
-                    self.browser.execute_script(
-                        f"var e = arguments[0]; e.insertAdjacentHTML('beforeend', '<br>{str(self.__translate_text(one.text))}')", one)
+                    self.browser.execute_script(f"var e = arguments[0]; e.insertAdjacentHTML('beforeend', '<br>{str(self.__translate_text(one.text))}')", one)
 
                 except selenium.common.exceptions.JavascriptException as e:
                     print(f'{Fore.RED}couldn\'t add text:\n{Fore.RESET}{one.text}\n', f'{Fore.BLUE}element:{Fore.RESET} {one}')
 
-                except selenium.common.exceptions.StaleElementReferenceException:
+                except Exception as e:
                     if self.browser.current_url != url:
                         print("Site switched")
                         self.process_data()
-
-                except Exception as e:
                     print(f'{Fore.RED}woops, some error stack process: {Fore.RESET}', e)
 
 
