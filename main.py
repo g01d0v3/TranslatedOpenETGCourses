@@ -30,7 +30,6 @@ class EdubeTranslator():
         self.browser.get('https://edube.org/')
 
     def __translate_text(self, text):
-        print(GoogleTranslator(source="en", target="ru").translate(text))
         return GoogleTranslator(source="en", target="ru").translate(text)
 
     def wait_for_switch_site(self):
