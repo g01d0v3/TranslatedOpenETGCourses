@@ -13,7 +13,7 @@ class EdubeTranslator():
     def find_elements(self):
         return self.browser.find_elements(By.TAG_NAME, 'p') + self.browser.find_elements(By.TAG_NAME, 'strong') + self.browser.find_elements(By.TAG_NAME, 'li')
 
-    def send_keys(self, mail, password):
+    def __send_keys(self, mail, password):
         self.browser.find_element(By.ID, "email").send_keys(mail)
         self.browser.find_element(By.ID, "password").send_keys(password)
         self.browser.find_element(By.XPATH, "//*[@id='content-wrap']/div/div/div/div/form/button").click()
@@ -23,10 +23,10 @@ class EdubeTranslator():
     def login(self):
         if setts.mail and setts.password:
             if input('Wanna use recent data(y/n)?\n').lower() == "y":
-                self.send_keys(setts.mail, setts.password)
+                self.__send_keys(setts.mail, setts.password)
         mail = input("ur mail ")
         password = input("ur password ")
-        self.send_keys(mail, password)
+        self.__send_keys(mail, password)
 
 
     def __translate_text(self, text):
