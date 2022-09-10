@@ -13,21 +13,21 @@ class EdubeTranslator():
     def find_elements(self):
         return self.browser.find_elements(By.TAG_NAME, 'p') + self.browser.find_elements(By.TAG_NAME, 'strong') + self.browser.find_elements(By.TAG_NAME, 'li')
 
-    def login(self):
-        if setts.mail and setts.password:
-            if input('Wanna use recent data(y/n)?\n').lower() == "y":
-                mail, password = setts.mail, setts.password
-            else:
-                mail = input("ur mail ")
-                password = input("ur password ")
-        else:
-            mail = input("ur mail ")
-            password = input("ur password ")
+    def send_keys(self, mail, password):
         self.browser.find_element(By.ID, "email").send_keys(mail)
         self.browser.find_element(By.ID, "password").send_keys(password)
         self.browser.find_element(By.XPATH, "//*[@id='content-wrap']/div/div/div/div/form/button").click()
         time.sleep(2)
         self.browser.get('https://edube.org/')
+
+    def login(self):
+        if setts.mail and setts.password:
+            if input('Wanna use recent data(y/n)?\n').lower() == "y":
+                self.send_keys(setts.mail, setts.password)
+        mail = input("ur mail ")
+        password = input("ur password ")
+        self.send_keys(mail, password)
+
 
     def __translate_text(self, text):
         return GoogleTranslator(source="en", target="ru").translate(text)
