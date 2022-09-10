@@ -1,3 +1,5 @@
+from colorama import Fore
+import selenium.common.exceptions
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
@@ -24,10 +26,10 @@ class EdubeTranslator():
         if setts.mail and setts.password:
             if input('Wanna use recent data(y/n)?\n').lower() == "y":
                 self.__send_keys(setts.mail, setts.password)
+                return
         mail = input("ur mail ")
         password = input("ur password ")
         self.__send_keys(mail, password)
-
 
     def __translate_text(self, text):
         return GoogleTranslator(source="en", target="ru").translate(text)
@@ -37,24 +39,30 @@ class EdubeTranslator():
         while self.browser.current_url == url:
             print(url)
             time.sleep(3)
-        print('Site Switched to ', self.browser.current_url)
+        print(Fore.BLUE + 'Site Switched to ', self.browser.current_url, Fore.RESET)
+
         return True
 
     def process_data(self):
         ForAll = self.find_elements()
         if ForAll:
-            for all in ForAll:
-                print(all.text)
+            for one in ForAll:
                 try:
                     self.browser.execute_script(
-                        f"var e = arguments[0]; e.insertAdjacentHTML('beforeend', '<br>{str(self.__translate_text(all.text))}')", all)
+                        f"var e = arguments[0]; e.insertAdjacentHTML('beforeend', '<br>{str(self.__translate_text(one.text))}')", one)
+                except selenium.common.exceptions.JavascriptException as e:
+                    print(Fore.RED + f'couldn\'t add text:\n', Fore.RESET, one.text, one )
                 except Exception as e:
-                    print('woops, some error stack process: ', e)
+                    print(Fore.RED + 'woops, some error stack process: ', Fore.RESET, e)
+
 
 
 if __name__ == "__main__":
-    Chrome = EdubeTranslator()
-    Chrome.login()
-    Chrome.process_data()
-    while Chrome.wait_for_switch_site():
+    try:
+        Chrome = EdubeTranslator()
+        Chrome.login()
         Chrome.process_data()
+        while Chrome.wait_for_switch_site():
+            Chrome.process_data()
+    except KeyboardInterrupt:
+        pass
