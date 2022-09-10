@@ -15,12 +15,24 @@ class EdubeTranslator():
     def find_elements(self):
         return self.browser.find_elements(By.TAG_NAME, 'p') + self.browser.find_elements(By.TAG_NAME, 'strong') + self.browser.find_elements(By.TAG_NAME, 'li')
 
+    def __write_config(self, mail, password):
+        with open("setts.py", "a") as file:
+            file.truncate(0)
+            file.write(
+                f"mail = \'{mail}\'\n"
+                f"password = \'{password}\'"
+            )
+            file.close()
+
     def __send_keys(self, mail, password):
         self.browser.find_element(By.ID, "email").send_keys(mail)
         self.browser.find_element(By.ID, "password").send_keys(password)
         self.browser.find_element(By.XPATH, "//*[@id='content-wrap']/div/div/div/div/form/button").click()
         time.sleep(2)
-        self.browser.get('https://edube.org/')
+        if self.browser.current_url=='https://edube.org/study':
+            self.browser.get('https://edube.org/')
+        else:
+            print("Invalid credentials.")
 
     def login(self):
         if setts.mail and setts.password:
@@ -29,6 +41,7 @@ class EdubeTranslator():
                 return
         mail = input("ur mail ")
         password = input("ur password ")
+        self.__write_config(mail, password)
         self.__send_keys(mail, password)
 
     def __translate_text(self, text):
@@ -65,4 +78,4 @@ if __name__ == "__main__":
         while Chrome.wait_for_switch_site():
             Chrome.process_data()
     except KeyboardInterrupt:
-        pass
+        quit()
