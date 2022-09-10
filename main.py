@@ -57,6 +57,7 @@ class EdubeTranslator():
 
     def process_data(self):
         ForAll = self.find_elements()
+        url = self.browser.current_url
         if ForAll:
             for one in ForAll:
                 try:
@@ -65,6 +66,11 @@ class EdubeTranslator():
 
                 except selenium.common.exceptions.JavascriptException as e:
                     print(f'{Fore.RED}couldn\'t add text:\n{Fore.RESET}{one.text}\n', f'{Fore.BLUE}element:{Fore.RESET} {one}')
+
+                except selenium.common.exceptions.StaleElementReferenceException:
+                    if self.browser.current_url != url:
+                        print("Site switched")
+                        self.process_data()
 
                 except Exception as e:
                     print(f'{Fore.RED}woops, some error stack process: {Fore.RESET}', e)
