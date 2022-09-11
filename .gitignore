@@ -1,1 +1,4 @@
-/setts.py
+setts.py
+venv/
+.idea/
+__pycache__/
